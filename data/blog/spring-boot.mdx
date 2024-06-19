@@ -1,0 +1,189 @@
+---
+title: spring application 초기화 과정 살펴보기
+date: '2024-06-18'
+tags: ['java', 'spring']
+draft: false
+layout: PostBanner
+images: ['/static/images/spring.svg']
+summary: spring application 에서 applicationContext, BeanFactory 등 스프링 컴포넌트들이 초기화 되는 과정을 살펴보자.
+---
+## 들어가며
+
+첫 블로그 글 주제를 생각해보다가 평소부터 궁금 했던 내용들을 주제로 잡아서 글을 써보자 한다.
+첫 주제로 Spring 이 내부적으로 동작하는 방법을 확인해보고 이해 해보도록 하자.<br/>
+
+## Spring Application
+Spring application 시작시 여러가지 초기화 작업들이 진행된다.<br/>
+ComponenScan, Bean creation, application Listener, applicationRunner, etc... 등이 초기화 될 때 어떠한 과정이 진행되는지 확인해보자.
+참고: 주석을 사용하여 코드를 설명 할 예정이므로 주석도 내용에 일부로 봐주시면 된다.
+
+### Main Method
+````java
+public static void main(String[] args) {
+		SpringApplication.run(ProjectBaseApplication.class, args);
+	}
+````
+spring boot 프로젝트는 보통 SpringApplication.run 함수를 호출함으로써 시작된다.<br/>
+run 함수에서 ComponentScan, DI, Bean 생성등이 일어난다.<br/>
+
+### In SpringApplication.run
+````java
+public ConfigurableApplicationContext run(String... args) {
+		Startup startup = Startup.create();
+        // shutdownHook 이 옵션을 확인한다.
+		if (this.registerShutdownHook) {
+			SpringApplication.shutdownHook.enableShutdownHookAddition();
+		}
+        // applicationContext 생성전 사용할 context 를 생성 한다.
+        // 용도 -> applicationContext 생성전 공유할 싱글톤 object 저장
+		DefaultBootstrapContext bootstrapContext = createBootstrapContext();
+		ConfigurableApplicationContext context = null;
+		configureHeadlessProperty();
+        // ApplicationRunListener 초기화
+		SpringApplicationRunListeners listeners = getRunListeners(args);
+		listeners.starting(bootstrapContext, this.mainApplicationClass);
+		try {
+            //1️⃣ 기본 arg 가져 온다.
+			ApplicationArguments applicationArguments = new DefaultApplicationArguments(args);
+            //2️⃣ arg 와 application.properties 를 조합.
+			ConfigurableEnvironment environment = prepareEnvironment(listeners, bootstrapContext, applicationArguments);
+            //3️⃣ 배너 출력
+			Banner printedBanner = printBanner(environment);
+            //4️⃣ applicationContext 생성 applicationContext -> spring bean bucket
+			context = createApplicationContext();
+			context.setApplicationStartup(this.applicationStartup);
+            //5️⃣ context 에 필요한 것들을 준비.
+			prepareContext(bootstrapContext, context, environment, listeners, applicationArguments, printedBanner);
+            //6️⃣ ❗❗componentScan, Bean Creation 시작
+			refreshContext(context);
+			afterRefresh(context, applicationArguments);
+            //7️⃣ 시작 시간 기록
+			startup.started();
+			if (this.logStartupInfo) {
+				new StartupInfoLogger(this.mainApplicationClass).logStarted(getApplicationLog(), startup);
+			}
+			listeners.started(context, startup.timeTakenToStarted());
+            //8️⃣ componentScan 이 완료 되어 모든 bean 이 초기화 되었을 때 applicationRunner 시작 된다.
+			callRunners(context, applicationArguments);
+		}
+		catch (Throwable ex) {
+			throw handleRunFailure(context, ex, listeners);
+		}
+		try {
+			if (context.isRunning()) {
+				listeners.ready(context, startup.ready());
+			}
+		}
+		catch (Throwable ex) {
+			throw handleRunFailure(context, ex, null);
+		}
+		return context;
+	}
+````
+위와 같이 주목해서 봐야 될 지점은 4가지이다.
+1. commandLine argument 수집
+2. 환경 변수 준비
+3. 배너 출력
+4. applicationContext 생성
+
+6️⃣번 refreshContext 메소드에서 applicationContext 관련 작업이 시작된다.<br /><br />
+
+### In refreshContext
+````java
+// In refreshContext
+private void refreshContext(ConfigurableApplicationContext context) {
+		if (this.registerShutdownHook) {
+			shutdownHook.registerApplicationContext(context);
+		}
+		❗refresh(context);
+	}
+// In refresh
+protected void refresh(ConfigurableApplicationContext applicationContext) {
+		❗applicationContext.refresh();
+	}
+````
+ApplicationContext 에서는 아래와 같이 Bean Definition 을 검색하고 obejct 생성을 진행한다.
+
+### In applicationContext.refresh()
+````java
+// In applicationContext.refresh()
+
+
+// Prepare this context for refreshing.
+prepareRefresh();
+
+// Tell the subclass to refresh the internal bean factory.
+ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
+
+// Prepare the bean factory for use in this context.
+prepareBeanFactory(beanFactory);
+
+try {
+    // Allows post-processing of the bean factory in context subclasses.
+    postProcessBeanFactory(beanFactory);
+
+    StartupStep beanPostProcess = this.applicationStartup.start("spring.context.beans.post-process");
+    // Invoke factory processors registered as beans in the context.
+    1️⃣invokeBeanFactoryPostProcessors(beanFactory);
+    // Register bean processors that intercept bean creation.
+    2️⃣registerBeanPostProcessors(beanFactory);
+    beanPostProcess.end();
+
+    // Initialize message source for this context.
+    3️⃣initMessageSource();
+    // Initialize event multicaster for this context.
+    4️⃣initApplicationEventMulticaster();
+
+    // Initialize other special beans in specific context subclasses.
+    5️⃣onRefresh();
+
+    // Check for listener beans and register them.
+    6️⃣registerListeners();
+
+    // Instantiate all remaining (non-lazy-init) singletons.
+    7️⃣finishBeanFactoryInitialization(beanFactory);
+    // Last step: publish corresponding event.
+    8️⃣finishRefresh();
+}
+
+    catch (RuntimeException | Error ex ) {
+        if (logger.isWarnEnabled()) {
+                logger.warn("Exception encountered during context initialization - " +
+							"cancelling refresh attempt: " + ex);
+        }
+
+        // Destroy already created singletons to avoid dangling resources.
+        destroyBeans();
+        // Reset 'active' flag.
+        cancelRefresh(ex);
+
+        // Propagate exception to caller.
+        throw ex;
+}
+````
+applicationContext.refresh 에서 실제 Bean 관련 작업들이 실행된다.
+이과정에서 Bean class 를 찾고 인스턴스화 하는 과정이 진행된다.
+
+1️⃣ BeanDefinition 을 찾는다. (@Configuration, @Component, @Service, etc..)<br />
+2️⃣ Bean Object 생성<br />
+3️⃣ MessageSource 생성<br />
+4️⃣ ApplicationEventMulticaster 초기화 (ApplicationListener 관리)<br />
+5️⃣ servlet web server 기동<br />
+6️⃣ ApplicationListener 추가<br />
+7️⃣ 남아있는 초기화 되지 않은 bean 초기화<br />
+8️⃣ cache, lifecycleProcessor 초기화<br />
+
+## 결론
+spring application이 실행될 때 아래 같은 단계를 실행하는것을 확인했다.
+1. commnadLine 변수를 포함하여 application 실행될 때 필요한 환경변수를 조합하여 만든다.
+2. 배너 출력
+3. applicationContext에서 기본 설정, 추가 설정을 기반으로 BeanDefinition을 모으고 Object를 생성한다. (@Configutaion 우선순위)
+4. web appliaction의 경우 web server를 기동한다.(tomcat, undertow, jetty)
+5. 각종 listener 등록
+5. 마루리 작업 진행(reset cache, lifecycleProcessor 초기화)
+
+## 마치며
+**There is no magic in code**<br />
+Spring 또한 마법처럼 내코드가 실행되는것이 아니라 특정 정책, 자동 설정을 통해서 동작하는 것을 확인 할 수 있었다.<br/>
+다음 시간에는 우리는 보통 Configuration을 추가로 생성해서 여러 설정들을 override 하는데 좀더 좀더 상세하게
+bean이 어떻게 생성되는지 확인해보자.
