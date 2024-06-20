@@ -55,16 +55,15 @@ const siteMetadata = {
         // https://vercel.com/docs/environment-variables
         provider: 'giscus', // supported providers: giscus, utterances, disqus
         giscusConfig: {
-            themeURL:'',
-            theme: 'light_tritanopia',
-            darkTheme: 'noborder_dark',
+            theme: 'light',
+            darkTheme: '',
             mapping: 'pathname',
             repo: 'whitenight209/whitenight209.github.io',
             repositoryId: 'R_kgDOMGsXXw',
             category: 'General',
             categoryId: 'DIC_kwDOMGsXX84CgNV8',
-            reactions: "1",
-            metadata: "0",
+            reactions: true,
+            metadata: false,
             inputPosition: 'bottom',
             lang: 'ko'
         }
