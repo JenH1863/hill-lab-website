@@ -1,0 +1,262 @@
+---
+title: digコマンド
+date: '2025-05-29'
+tags: ['network', 'dns']
+draft: false
+summary: digコマンドの使い方を解説します。
+---
+
+## はじめに
+
+この記事では、digコマンドの使い方を解説します。
+
+対象読者は、DNSに自信のないバックエンドエンジニアです。  
+DNS周りの設定の確認や、迅速なトラブルシュートを行うのに役立つはずです。
+
+<TOCInline toc={props.toc} exclude="はじめに" asDisclosure />
+
+## 構文
+
+digコマンドは、**権威サーバーやフルリゾルバーに問い合わせを行い、ドメイン名に関する情報を取得するためのコマンドラインツール**です。
+
+```bash
+dig [オプション] [@サーバー] ドメイン名 [タイプ] [クラス] 
+```
+
+- **オプション**: 後述
+- **@サーバー**: 問い合わせ先のサーバー（権威サーバーやフルリゾルバーなど）をドメイン名またはIPアドレスで指定する。省略した場合、システムに設定されているフルリゾルバーが使われる。
+- **ドメイン名**: 問い合わせのドメイン名を指定
+- **タイプ**: 問い合わせのタイプを指定。省略した場合、A（IPv4アドレス）が指定される。
+- **クラス**: 問い合わせのクラスを指定。省略した場合、IN（インターネット）が指定される。
+
+Google Public DNSに`www.google.com`のAリソースレコードを問い合わせたときの出力例です。  
+出力の詳しい見方は後ほど解説しますので、今は`ANSWER SECTION`に目的のIPアドレスが表示されていることだけ見てもらえればOKです。
+
+```bash
+% dig @8.8.8.8 www.google.com IN A
+
+; <<>> DiG 9.10.6 <<>> @8.8.8.8 www.google.com IN A
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 49977
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 512
+;; QUESTION SECTION:
+;www.google.com.			IN	A
+
+;; ANSWER SECTION:
+www.google.com.		172	IN	A	142.251.42.164
+
+;; Query time: 15 msec
+;; SERVER: 8.8.8.8#53(8.8.8.8)
+;; WHEN: Wed May 28 15:31:23 JST 2025
+;; MSG SIZE  rcvd: 59
+```
+
+## オプション
+
+主なオプションです。
+
+- `+recurse`または`+rec`（デフォルト）: 名前解決要求の有効化。名前解決要求とはスタブリゾルバーからフルリゾルバーへの問い合わせのこと。
+- `+norecurse`または`+norec`: 名前解決要求の無効化。権威サーバーへの問い合わせを行う。
+- `+edns`（デフォルト）: EDNS0の有効化。EDNS0を使用すると、512バイトを超えるDNSメッセージをUDPで扱うことができる。
+- `+noedns`: EDNS0の無効化。
+- `+dnssec`: 問い合わせのDNSSEC OK（DO）ビットをセット。DNSSECに対応している旨をサーバーに伝える。
+- `+tcp`: TCPで問い合わせを行う。
+- `+trace`: ルートから委任情報をトレースする。
+- `-x`: 指定されたIPアドレスを逆引き用ドメイン名に変換する。
+- `multiline`または`+multi`: 複数行形式で出力する。
+
+## 出力の見方
+
+出力を読み解くうえでDNSメッセージの形式をある程度理解しておく必要があります。  
+以下のように、セクションに分かれています。
+
+- **Headerセクション**: 各種制御情報を含むヘッダ部
+- **Questionセクション**: 問い合わせるドメイン名や、探す情報のタイプなど
+- **Answer, Authority, Additionalセクション**: 問い合わせに対する応答が設定される
+
+それでは、上述の`dig @8.8.8.8 www.google.com IN A`の出力結果を見ていきます。
+
+まずはHeaderセクションを見てみましょう。
+
+```bash
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 49977
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+```
+
+`status`と`flags`に注目してください。
+
+`status`には**応答コード**が表示されます。  
+主な応答コードは次のとおりです。
+
+- `NOERROR`: 通常応答
+- `SERVFAIL`: サーバー側の異常で名前解決に失敗した
+- `NXDOMAIN`: その名前とその下の階層にはいずれのリソースレコードも存在しない
+- `REFUSED`: アクセス制限や管理ポリシーなどによりリクエストを拒否した
+
+今回の例では通常応答を示す`NOERROR`が表示されています。
+
+`flags`には**応答にそれぞれのフラグビットがセットされていること**を示しています。  
+ここでは`rd`と`ra`が重要です。
+
+`rd`は「Recursion Desired」の略で、問い合わせが名前解決要求であることを示しています。  
+`ra`は「Recursion Available」の略で、応答した相手（Google Public DNS）が名前解決要求を処理できる、つまりフルリゾルバーであることを示しています。
+
+次にQuestionセクションを見てみましょう。
+
+```bash
+;; QUESTION SECTION:
+;www.google.com.			IN	A
+```
+
+問い合わせのドメイン名とタイプがそのままコピーされています。
+
+最後にAnswerセクションを見てみましょう。
+
+```bash
+;; ANSWER SECTION:
+www.google.com.		172	IN	A	142.251.42.164
+```
+
+`www.google.com`のIPv4アドレスが表示されています。  
+
+## 動作確認のやり方
+
+### 権威サーバー
+
+あなたが権威サーバーの管理者だとして、**そのサーバーに問題なくリソースレコードが設定できているか、返答できるかを確認するイメージ**です。
+
+権威サーバー`ns1.jprs.co.jp`（`202.11.16.49`）に`jprs.co.jp`のAリソースレコードを問い合わせてみます。  
+`+norec`オプションを指定して、名前解決要求を行わず権威サーバーに直接問い合わせるのがポイントです。
+
+```bash
+% dig +norec @202.11.16.49 jprs.co.jp A
+
+; <<>> DiG 9.10.6 <<>> +norec @202.11.16.49 jprs.co.jp A
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 11847
+;; flags: qr aa; QUERY: 1, ANSWER: 1, AUTHORITY: 4, ADDITIONAL: 9
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+;; QUESTION SECTION:
+;jprs.co.jp.			IN	A
+
+;; ANSWER SECTION:
+jprs.co.jp.		300	IN	A	117.104.133.165
+
+;; AUTHORITY SECTION:
+jprs.co.jp.		86400	IN	NS	ns2.jprs.co.jp.
+jprs.co.jp.		86400	IN	NS	ns1.jprs.co.jp.
+jprs.co.jp.		86400	IN	NS	ns4.jprs.co.jp.
+jprs.co.jp.		86400	IN	NS	ns3.jprs.co.jp.
+
+;; ADDITIONAL SECTION:
+ns1.jprs.co.jp.		86400	IN	A	202.11.16.49
+ns2.jprs.co.jp.		86400	IN	A	202.11.16.59
+ns3.jprs.co.jp.		86400	IN	A	203.105.65.178
+ns4.jprs.co.jp.		86400	IN	A	203.105.65.181
+ns1.jprs.co.jp.		86400	IN	AAAA	2001:df0:8::a153
+ns2.jprs.co.jp.		86400	IN	AAAA	2001:df0:8::a253
+ns3.jprs.co.jp.		86400	IN	AAAA	2001:218:3001::a153
+ns4.jprs.co.jp.		86400	IN	AAAA	2001:218:3001::a253
+
+;; Query time: 11 msec
+;; SERVER: 202.11.16.49#53(202.11.16.49)
+;; WHEN: Wed May 28 16:21:57 JST 2025
+;; MSG SIZE  rcvd: 303
+```
+
+出力結果で確認するポイントは次のとおりです。
+
+- Headerセクションの`status`が`NOERROR`である
+- Headerセクションの`flags`に、「Authoritative Answer」ビットという、応答したサーバーが問い合わせされたドメイン名の情報に対する管理権限を持つことを示す`aa`がセットされている
+- Answerセクションに、`jprs.co.jp`のAリソースレコードが存在する
+- Authorityセクションに、`jprs.co.jp`の権威サーバーの正しいNSリソースレコードが設定されている
+- AdditionalセクションにAuthorityセクションに設定された権威サーバーのAリソースレコードおよびAAAAリソースレコードが正しく設定されている
+
+次にフルリゾルバーとして動作していないことを確認します。  
+今回の例だと、この権威サーバーで管理していないドメイン名`www.google.com`のAリソースレコードに対する問い合わせを、名前解決要求を有効化して行います。
+
+```bash
+% dig @202.11.16.49 www.google.com A
+
+; <<>> DiG 9.10.6 <<>> @202.11.16.49 www.google.com A
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: REFUSED, id: 51056
+;; flags: qr rd; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 1
+;; WARNING: recursion requested but not available
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+;; QUESTION SECTION:
+;www.google.com.			IN	A
+
+;; Query time: 22 msec
+;; SERVER: 202.11.16.49#53(202.11.16.49)
+;; WHEN: Wed May 28 16:38:07 JST 2025
+;; MSG SIZE  rcvd: 43
+```
+
+出力結果で確認するポイントは次のとおりです。
+
+- Headerセクションの`status`が`REFUSED`である
+- Headerセクションの`flags`に名前解決要求を処理可能であることを示す`ra`がセットされていない
+
+### フルリゾルバー
+
+DNS関連のトラブルの原因切り分け時に、**フルリゾルバーに異常がないかを確認する場面**をイメージしてください。
+
+システムに設定されているフルリゾルバーを確認するために、`www.kantei.go.jp`のAリソースレコードを問い合わせてみます。
+
+```bash
+% dig www.kantei.go.jp A
+
+; <<>> DiG 9.10.6 <<>> www.kantei.go.jp A
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 4737
+;; flags: qr rd ra; QUERY: 1, ANSWER: 4, AUTHORITY: 0, ADDITIONAL: 0
+
+;; QUESTION SECTION:
+;www.kantei.go.jp.		IN	A
+
+;; ANSWER SECTION:
+www.kantei.go.jp.	30	IN	A	13.225.177.6
+www.kantei.go.jp.	30	IN	A	13.225.177.55
+www.kantei.go.jp.	30	IN	A	13.225.177.102
+www.kantei.go.jp.	30	IN	A	13.225.177.77
+
+;; Query time: 13 msec
+;; SERVER: 100.64.0.2#53(100.64.0.2)
+;; WHEN: Wed May 28 18:01:04 JST 2025
+;; MSG SIZE  rcvd: 98
+```
+
+出力結果で確認するポイントは次のとおりです。
+
+- Headerセクションの`status`が`NOERROR`である
+- Headerセクションの`flags`に名前解決要求を処理可能であることを示す`ra`がセットされている
+- Answerセクションに、`www.kantei.go.jp`のAリソースレコードが存在する
+
+## まとめ
+
+- digコマンドは、権威サーバーやフルリゾルバーに問い合わせを行い、ドメイン名に関する情報を取得するためのコマンドラインツール
+- 基本的な構文は`dig [オプション] [@サーバー] ドメイン名 [タイプ] [クラス]`
+- 出力はHeader、Question、Answer、Authority、Additionalセクションに分かれている
+- `+norec`オプションで名前解決要求を無効化して権威サーバーに直接問い合わせできる
+- `+rec`オプションでフルリゾルバーに名前解決要求を送れる
+- 権威サーバーの動作確認は、`flags`に`aa`がセットされていることがポイント
+- フルリゾルバーの動作確認は、`flags`に`ra`がセットされていることがポイント
+
+## 参考文献
+
+- [DNSがよくわかる教科書](https://www.sbcr.jp/product/4797394481/)
