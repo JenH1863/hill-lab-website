@@ -1,4 +1,5 @@
 {
-  "network": 1,
+  "network": 2,
+  "dns": 1,
   "tcpip": 1
 }
