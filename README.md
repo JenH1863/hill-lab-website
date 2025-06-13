@@ -33,6 +33,7 @@ Internationalization support - [Template with i18n](https://tailwind-nextjs-star
 
 - [Demo Blog](https://tailwind-nextjs-starter-blog.vercel.app/) - this repo
 - [My personal blog](https://www.timlrx.com) - modified to auto-generate blog posts with dates
+- [MindMire](https://mindmire.com) - A personal mind-dump blog. Modified to support full JSX-powered interactive posts, enabling highly dynamic, experimental writing. ([source code](https://github.com/khokonm/mindmire.com))
 - [Karhdo's Blog](https://karhdo.dev) - Karhdo's Blog - Karhdo's Coding Adventure ([source code](https://github.com/Karhdo/karhdo.dev))
 - [SOTO's Blog](https://www.atksoto.com/) - A more personalized personal website upgraded from V1 ([source code](https://github.com/acsoto/soto-blog-nextjs))
 - [Prabhu's Blog](https://v1-prabhukirankonda.vercel.app) - Prabhu's Personal website with blog ([source code](https://github.com/prabhukiran8790/prabhukirankonda))
