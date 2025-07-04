@@ -33,7 +33,6 @@ Internationalization support - [Template with i18n](https://tailwind-nextjs-star
 
 - [Demo Blog](https://tailwind-nextjs-starter-blog.vercel.app/) - this repo
 - [My personal blog](https://www.timlrx.com) - modified to auto-generate blog posts with dates
-- [MindMire](https://mindmire.com) - A personal mind-dump blog. Modified to support full JSX-powered interactive posts, enabling highly dynamic, experimental writing. ([source code](https://github.com/khokonm/mindmire.com))
 - [Karhdo's Blog](https://karhdo.dev) - Karhdo's Blog - Karhdo's Coding Adventure ([source code](https://github.com/Karhdo/karhdo.dev))
 - [SOTO's Blog](https://www.atksoto.com/) - A more personalized personal website upgraded from V1 ([source code](https://github.com/acsoto/soto-blog-nextjs))
 - [Prabhu's Blog](https://v1-prabhukirankonda.vercel.app) - Prabhu's Personal website with blog ([source code](https://github.com/prabhukiran8790/prabhukirankonda))
@@ -88,6 +87,7 @@ Internationalization support - [Template with i18n](https://tailwind-nextjs-star
 - [trungtmnguyen.com](https://www.trungtmnguyen.com/) - 🇻🇳 Trung's personal and technical blogs – some idea about me, tips, ideas and learned. Add some custom components, like: UnderlineHoverLink, Timeline, neon-border styles and will have more in the future. ([source](https://github.com/trungntm/trungtmnguyen.com))
 - [Ryan Fitton's Blog](https://ryanfitton.co.uk/) – A custom theme version with 'Portfolio' section. Used as a personal Blog/Portfolio for development projects. ([source code](https://github.com/ryanfitton/ryanfitton-nextjs-2024))
 - [ktovoz.com](https://www.ktovoz.com/) - Kto's personal blog, sharing life, technology. Added article categories and article directory navigation 「中文」
+- [MindMire](https://mindmire.com) - A personal mind-dump blog. Modified to support full JSX-powered interactive posts, enabling highly dynamic, experimental writing. ([source code](https://github.com/khokonm/mindmire.com))
 
 Using the template? Feel free to create a PR and add your blog to this list.
 
