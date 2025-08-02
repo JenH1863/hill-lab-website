@@ -4,8 +4,8 @@
 </h1>
 
 <p align="center">
-  <!-- GitHub Octocat 动画小猫，蓝色背景 -->
-  <img src="https://octodex.github.com/images/nyantocat.gif" width="140" style="background:#36BCF7; border-radius:50%; padding:16px; box-shadow:0 0 20px #36BCF7;" alt="Octocat Animation">
+  <!-- GitHub Octocat 像素风动画，蓝色背景 -->
+  <img src="https://github.com/Platane/snk/raw/output/github-contribution-grid-snake.svg" style="background:#36BCF7; border-radius:20px; padding:8px; box-shadow:0 0 20px #36BCF7;" width="400" alt="github contribution grid snake animation" />
 </p>
 
 <p align="center">
