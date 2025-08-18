@@ -1,28 +1,18 @@
 /** @type {import("pliny/config").PlinyConfig } */
 const siteMetadata = {
-  title: 'Next.js Starter Blog',
-  author: 'Tails Azimuth',
-  headerTitle: 'TailwindBlog',
-  description: 'A blog created with Next.js and Tailwind.css',
-  language: 'en-us',
+  title: 'MIGAKI SYOKUNINs General Information Center Blog Branch',
+  author: 'MIGAKI SYOKUNIN',
+  headerTitle: 'MIGAKI SYOKUNIN Blog',
+  description: 'Comparison and review of adult products, Comparison and review of adult websites, Websites for providing rich and useful information',
+  language: 'ja-jp',
   theme: 'system', // system, dark or light
-  siteUrl: 'https://tailwind-nextjs-starter-blog.vercel.app',
-  siteRepo: 'https://github.com/timlrx/tailwind-nextjs-starter-blog',
-  siteLogo: `${process.env.BASE_PATH || ''}/static/images/logo.png`,
+  siteUrl: 'https://tailwind-nextjs-starter-blog.vercel.app', // 後で変更
+  siteRepo: 'https://github.com/timlrx/tailwind-nextjs-starter-blog', // 後で変更
+  siteLogo: `${process.env.BASE_PATH || ''}/static/images/logo.png`, // 後で変更
   socialBanner: `${process.env.BASE_PATH || ''}/static/images/twitter-card.png`,
-  mastodon: 'https://mastodon.social/@mastodonuser',
-  email: 'address@yoursite.com',
-  github: 'https://github.com',
-  x: 'https://twitter.com/x',
-  // twitter: 'https://twitter.com/Twitter',
-  facebook: 'https://facebook.com',
-  youtube: 'https://youtube.com',
-  linkedin: 'https://www.linkedin.com',
-  threads: 'https://www.threads.net',
-  instagram: 'https://www.instagram.com',
-  medium: 'https://medium.com',
-  bluesky: 'https://bsky.app/',
-  locale: 'en-US',
+  // email: 'address@yoursite.com',
+  x: 'https://twitter.com/x', // Xアカウント作成したら変える
+  locale: 'ja-jp',
   // set to true if you want a navbar fixed to the top
   stickyNav: false,
   analytics: {
