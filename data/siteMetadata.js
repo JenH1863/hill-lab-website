@@ -1,6 +1,6 @@
 /** @type {import("pliny/config").PlinyConfig } */
 const siteMetadata = {
-  title: 'Ryan Batch: Multidisciplinary Designer',
+  title: 'Multidisciplinary Designer',
   author: 'Ryan Batch',
   headerTitle: 'Ryan Batch',
   description: 'A portfolio site showcasing my design projects and case studies.',
