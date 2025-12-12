@@ -2,7 +2,7 @@
 const siteMetadata = {
   title: 'Ryan Batch: Multidisciplinary Designer',
   author: 'Ryan Batch',
-  headerTitle: 'TailwindBlog',
+  headerTitle: 'Ryan Batch',
   description: 'A portfolio site showcasing my design projects and case studies.',
   language: 'en-us',
   theme: 'system', // system, dark or light
