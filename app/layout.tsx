@@ -2,7 +2,7 @@ import 'css/tailwind.css'
 import 'pliny/search/algolia.css'
 import 'remark-github-blockquote-alert/alert.css'
 
-import { Aleo } from 'next/font/google'
+import { Arimo } from 'next/font/google'
 import { Analytics, AnalyticsConfig } from 'pliny/analytics'
 import { SearchProvider, SearchConfig } from 'pliny/search'
 import Header from '@/components/Header'
@@ -12,10 +12,10 @@ import siteMetadata from '@/data/siteMetadata'
 import { ThemeProviders } from './theme-providers'
 import { Metadata } from 'next'
 
-const aleo = Aleo({
+const arimo = Arimo({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-aleo',
+  variable: '--font-arimo',
 })
 
 export const metadata: Metadata = {
@@ -64,7 +64,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang={siteMetadata.language}
-      className={`${aleo.variable} scroll-smooth`}
+      className={`${arimo.variable} scroll-smooth`}
       suppressHydrationWarning
     >
       <link rel="icon" type="image/x-icon" href={`${basePath}/static/favicons/favicon.ico`} />

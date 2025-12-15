@@ -8,7 +8,7 @@
 @theme {
   /* Font families */
   --font-sans:
-    var(--font-aleo), ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    var(--font-arimo), ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
     'Segoe UI Symbol', 'Noto Color Emoji';
 
   /* Colors */
