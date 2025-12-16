@@ -3,6 +3,7 @@ interface Project {
   description: string
   href?: string
   imgSrc?: string
+  slug: string
 }
 
 const projectsData: Project[] = [
@@ -12,7 +13,8 @@ const projectsData: Project[] = [
     and more. Google has many features to help you find exactly what you're looking
     for.`,
     imgSrc: '/static/images/archetypes-cover.png',
-    href: 'https://www.google.com',
+    href: '/projects/growing-ux-maturity',
+    slug: 'growing-ux-maturity',
   },
   {
     title: 'The Time Machine',
@@ -20,7 +22,8 @@ const projectsData: Project[] = [
     to the desired date and press "Go". No more worrying about lost keys or
     forgotten headphones with this simple yet affordable solution.`,
     imgSrc: '/static/images/time-machine.jpg',
-    href: '/blog/the-time-machine',
+    href: '/projects/the-time-machine',
+    slug: 'the-time-machine',
   },
   {
     title: 'Project Case Study 1',
@@ -28,7 +31,8 @@ const projectsData: Project[] = [
     strategic thinking, user research, and thoughtful design execution that resulted 
     in meaningful user engagement and business impact.`,
     imgSrc: '',
-    href: '#',
+    href: '/projects/project-case-study-1',
+    slug: 'project-case-study-1',
   },
   {
     title: 'Project Case Study 2',
@@ -36,7 +40,8 @@ const projectsData: Project[] = [
     this case study demonstrates the process of creating intuitive experiences that 
     resonate with users and drive measurable results.`,
     imgSrc: '',
-    href: '#',
+    href: '/projects/project-case-study-2',
+    slug: 'project-case-study-2',
   },
   {
     title: 'Project Case Study 3',
@@ -44,7 +49,8 @@ const projectsData: Project[] = [
     empathy, research, and iteration led to a product that truly serves user needs 
     while achieving business objectives.`,
     imgSrc: '',
-    href: '#',
+    href: '/projects/project-case-study-3',
+    slug: 'project-case-study-3',
   },
   {
     title: 'Project Case Study 4',
@@ -52,7 +58,8 @@ const projectsData: Project[] = [
     the journey from concept to launch, highlighting the decisions and learnings that 
     shaped the final product.`,
     imgSrc: '',
-    href: '#',
+    href: '/projects/project-case-study-4',
+    slug: 'project-case-study-4',
   },
   {
     title: 'Project Case Study 5',
@@ -60,7 +67,8 @@ const projectsData: Project[] = [
     thinking, this project demonstrates how good design can simplify complexity and 
     create delightful user experiences.`,
     imgSrc: '',
-    href: '#',
+    href: '/projects/project-case-study-5',
+    slug: 'project-case-study-5',
   },
   {
     title: 'Project Case Study 6',
@@ -68,7 +76,8 @@ const projectsData: Project[] = [
     from stakeholder alignment through user validation, resulting in a solution that 
     balances aesthetics with functionality.`,
     imgSrc: '',
-    href: '#',
+    href: '/projects/project-case-study-6',
+    slug: 'project-case-study-6',
   },
 ]
 
