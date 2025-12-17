@@ -24,16 +24,6 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         />
       )}
       <p className="mb-8 text-lg">{project.description}</p>
-      {project.href && (
-        <a
-          href={project.href}
-          className="bg-primary-500 hover:bg-primary-600 inline-block rounded px-6 py-2 text-white transition"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Visit project
-        </a>
-      )}
     </div>
   )
 }
