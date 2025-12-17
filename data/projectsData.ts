@@ -26,13 +26,13 @@ const projectsData: Project[] = [
     slug: 'abba-haircare-brand-update',
   },
   {
-    title: 'Project Case Study 1',
+    title: 'Esri maps & layer preferences',
     description: `A compelling design challenge and innovative solution. This project showcases 
     strategic thinking, user research, and thoughtful design execution that resulted 
     in meaningful user engagement and business impact.`,
-    imgSrc: '',
-    href: '/projects/project-case-study-1',
-    slug: 'project-case-study-1',
+    imgSrc: '/static/images/layer-preferences-cover.png',
+    href: '/projects/esri-maps-layer-preferences',
+    slug: 'esri-maps-layer-preferences',
   },
   {
     title: 'Project Case Study 2',
