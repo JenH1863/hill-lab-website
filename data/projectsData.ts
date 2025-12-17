@@ -21,7 +21,7 @@ const projectsData: Project[] = [
     description: `A comprehensive brand refresh for a beloved haircare line. This project involved 
     modernizing visual identity, packaging design, and digital presence while 
     maintaining the brand's heritage and customer loyalty.`,
-    imgSrc: '/static/images/time-machine.jpg',
+    imgSrc: '/static/images/ah-cover.png',
     href: '/projects/abba-haircare-brand-update',
     slug: 'abba-haircare-brand-update',
   },
