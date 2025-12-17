@@ -9,10 +9,10 @@ interface Project {
 const projectsData: Project[] = [
   {
     title: 'Growing UX maturity',
-    description: `What if you could look up any information in the world? Webpages, images, videos
-    and more. Google has many features to help you find exactly what you're looking
-    for.`,
-    imgSrc: '/static/images/archetypes-cover.png',
+    description: `Discover how to cultivate UX maturity across your organization. This case study 
+    explores building a design-centric culture, establishing design systems, and 
+    empowering teams to make user-centered decisions at every level.`,
+    imgSrc: '/static/images/ux-maturity-cover.png',
     href: '/projects/growing-ux-maturity',
     slug: 'growing-ux-maturity',
   },
@@ -35,13 +35,13 @@ const projectsData: Project[] = [
     slug: 'esri-maps-layer-preferences',
   },
   {
-    title: 'Project Case Study 2',
-    description: `Explore how design thinking solved a complex problem. From discovery to delivery, 
-    this case study demonstrates the process of creating intuitive experiences that 
-    resonate with users and drive measurable results.`,
-    imgSrc: '',
-    href: '/projects/project-case-study-2',
-    slug: 'project-case-study-2',
+    title: 'Putting people first',
+    description: `Learn how personas and archetypes align organizations around human-centered design. 
+    This project demonstrates how to build shared mental models that guide product 
+    decisions and foster empathy across teams.`,
+    imgSrc: '/static/images/archetypes-cover.png',
+    href: '/projects/putting-people-first',
+    slug: 'putting-people-first',
   },
   {
     title: 'Project Case Study 3',
