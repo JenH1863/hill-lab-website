@@ -53,31 +53,31 @@ const projectsData: Project[] = [
     slug: 'interface-flor',
   },
   {
-    title: 'Project Case Study 4',
-    description: `Transforming ideas into reality through thoughtful design. This case study reveals 
-    the journey from concept to launch, highlighting the decisions and learnings that 
-    shaped the final product.`,
+    title: 'Logo design & marketing',
+    description: `Discover the importance of a strong logo design in connecting with customers and communicating 
+    the brand's values. This project explores how thoughtful logo design creates lasting impressions, builds brand 
+    recognition, and becomes the visual cornerstone of a company's identity.`,
     imgSrc: '',
-    href: '/projects/project-case-study-4',
-    slug: 'project-case-study-4',
+    href: '/projects/logo-design-marketing',
+    slug: 'logo-design-marketing',
   },
   {
-    title: 'Project Case Study 5',
-    description: `An exploration of design problem-solving. Through careful analysis and creative 
-    thinking, this project demonstrates how good design can simplify complexity and 
-    create delightful user experiences.`,
+    title: 'Interior design & installations',
+    description: `Good design is good design—it transcends discipline. This project demonstrates how strong design 
+    principles apply across any facet of design. A skilled designer can transfer foundational knowledge from one 
+    discipline to another, creating cohesive, thoughtful experiences whether designing spaces or interfaces.`,
     imgSrc: '',
-    href: '/projects/project-case-study-5',
-    slug: 'project-case-study-5',
+    href: '/projects/interior-design-installations',
+    slug: 'interior-design-installations',
   },
   {
-    title: 'Project Case Study 6',
-    description: `Where vision meets execution. This project showcases a complete design process 
-    from stakeholder alignment through user validation, resulting in a solution that 
-    balances aesthetics with functionality.`,
+    title: 'Design systems',
+    description: `Explore the importance of design systems and UI component libraries in bridging the gap between 
+    design and development. A well-crafted design system ensures consistency, accelerates development, reduces 
+    miscommunication, and creates a shared language that empowers both designers and developers to build better products.`,
     imgSrc: '',
-    href: '/projects/project-case-study-6',
-    slug: 'project-case-study-6',
+    href: '/projects/design-systems',
+    slug: 'design-systems',
   },
 ]
 
