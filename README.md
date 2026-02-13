@@ -31,6 +31,8 @@ Internationalization support - [Template with i18n](https://tailwind-nextjs-star
 
 ## Examples V2
 
+- [Aro Aruvi](https://themukesh.com) [💻⚡ Full Stack Developer | Web • Mobile • APIs]
+- [Akil Amit](https://themukesh.com) [Full Stack Developer]
 - [Demo Blog](https://tailwind-nextjs-starter-blog.vercel.app/) - this repo
 - [My personal blog](https://www.timlrx.com) - modified to auto-generate blog posts with dates
 - [Karhdo's Blog](https://karhdo.dev) - Karhdo's Blog - Karhdo's Coding Adventure ([source code](https://github.com/Karhdo/karhdo.dev))
