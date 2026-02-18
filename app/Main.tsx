@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import Link from '@/components/Link'
 import siteMetadata from '@/data/siteMetadata'
 
